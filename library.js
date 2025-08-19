@@ -96,3 +96,45 @@ function createNewBookForm() {
     aside.appendChild(form);
 }
 
+function addBookToLibrary(book) {
+    myLibrary.push(book);
+    renderLibrary();
+}
+
+function renderLibrary() {
+    const main = document.querySelector("main");
+    main.innerHTML = "";
+
+    myLibrary.forEach((bk) => {
+        const card = document.createElement("article");
+        card.className = "book-card";
+
+        const h3 = document.createElement("h3");
+        h3.textContent = bk.title;
+
+        const pAuthor = document.createElement("p");
+        const strongAuthor = document.createElement("strong");
+        strongAuthor.textContent = "Author:";
+        pAuthor.appendChild(strongAuthor);
+        pAuthor.append(" " + bk.author);
+
+        const pPages = document.createElement("p");
+        const strongPages = document.createElement("strong");
+        strongPages.textContent = "Pages:";
+        pPages.appendChild(strongPages);
+        pPages.append(" " + bk.pages);
+
+        const pRead = document.createElement("p");
+        const em = document.createElement("em");
+        em.textContent = bk.isRead();
+        pRead.appendChild(em);
+
+        card.append(h3, pAuthor, pPages, pRead);
+        main.appendChild(card);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.querySelector(".new-book");
+    btn.addEventListener("click", createNewBookForm);
+});
