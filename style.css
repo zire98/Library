@@ -5,7 +5,7 @@
 
 body {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 210px 1fr;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
         "header header"
@@ -18,21 +18,22 @@ aside {
     grid-area: aside;
     background-color: brown;
     display: flex;
+    align-items: center;
     justify-content: center;
-}
-
-aside ul {
-    display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    gap: 2rem;
-    list-style: none;
+    gap: 1rem;
+    padding: 1rem;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+.new-book {
+    padding: 1rem 2rem;
+    border-radius: 10px;
     font-weight: bold;
+}
+
+.new-book:hover {
+    background-color: grey;
+    cursor: pointer;
 }
 
 header {
