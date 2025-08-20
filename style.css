@@ -16,13 +16,15 @@ body {
 
 aside {
     grid-area: aside;
-    background-color: brown;
+    background-color: rgb(27, 27, 27);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+    border: 1px solid aliceblue;
+    color: aliceblue;
 }
 
 .new-book {
@@ -40,9 +42,11 @@ header {
     grid-area: header;
     display: flex;
     gap: 1rem;
-    background-color: brown;
+    background-color: black;
     padding: 1rem;
     justify-content: space-around;
+    color: aliceblue;
+    border: 1px solid aliceblue;
 }
 
 .left-header {
@@ -58,13 +62,20 @@ header {
 }
 
 .logo {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
 }
 
 main {
     grid-area: main;
+    background-color: rgb(27, 27, 27);
+    color: aliceblue;
+}
+
+.book-card {
+    padding: 1rem;
+    border: 1px solid aliceblue;
 }
 
 footer {
@@ -73,4 +84,5 @@ footer {
     background-color: black;
     color: aliceblue;
     padding: 1rem;
+    border: 1px solid aliceblue;
 }
