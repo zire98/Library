@@ -124,12 +124,21 @@ function renderLibrary() {
         pPages.appendChild(strongPages);
         pPages.append(" " + bk.pages);
 
-        const pRead = document.createElement("p");
-        const em = document.createElement("em");
-        em.textContent = bk.isRead();
-        pRead.appendChild(em);
+        const pStatus = document.createElement("p");
+        pStatus.className = "read-status";
+        pStatus.textContent = bk.read ? "Readed ✅" : "Not readed ❌";
 
-        card.append(h3, pAuthor, pPages, pRead);
+        const toggleBtn = document.createElement("button");
+        toggleBtn.type = "button";
+        toggleBtn.className = "toggle-read";
+        toggleBtn.textContent = bk.read ? "Remove read" : "Mark read";
+
+        toggleBtn.addEventListener("click", () => {
+            bk.read = !bk.read;
+            renderLibrary();
+        });
+
+        card.append(h3, pAuthor, pPages, pStatus, toggleBtn);
         main.appendChild(card);
     });
 }
