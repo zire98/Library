@@ -1,6 +1,7 @@
-const myLibrary = [];
+let myLibrary = [];
 
 function Book(title, author, pages, read) {
+    this.id = crypto.randomUUID();
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -101,6 +102,10 @@ function addBookToLibrary(book) {
     renderLibrary();
 }
 
+function deleteBook(id) {
+    myLibrary = myLibrary.filter(bk => bk.id !== id);
+}
+
 function renderLibrary() {
     const main = document.querySelector("main");
     main.innerHTML = "";
@@ -138,7 +143,17 @@ function renderLibrary() {
             renderLibrary();
         });
 
-        card.append(h3, pAuthor, pPages, pStatus, toggleBtn);
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "delete-book";
+        deleteBtn.textContent = "Delete book";
+
+        deleteBtn.addEventListener("click", () => {
+            deleteBook(bk.id);
+            renderLibrary();
+        })
+
+        card.append(h3, pAuthor, pPages, pStatus, toggleBtn, deleteBtn);
         main.appendChild(card);
     });
 }
