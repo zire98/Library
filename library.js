@@ -1,11 +1,12 @@
 let myLibrary = [];
 
-function Book(title, author, pages, read) {
+function Book(title, author, pages, read, cover) {
     this.id = crypto.randomUUID();
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
+    this.cover = cover || null;
 
     this.isRead = () => (this.read ? "is read" : "is not read");
     this.bookInfo = () =>
@@ -62,6 +63,11 @@ function createNewBookForm() {
     readInput.id = "read";
     readWrapper.append(readInput, readLabel);
 
+    const coverField = createLabeledInput({
+        labelText: "Cover", type: "file", name: "cover", id: "cover"
+    });
+    coverField.input.accept = "image/*";
+
     const actions = document.createElement("div");
     actions.className = "actions";
     const submitBtn = document.createElement("button");
@@ -78,6 +84,7 @@ function createNewBookForm() {
         authorField.wrapper,
         pagesField.wrapper,
         readWrapper,
+        coverField.wrapper,
         actions
     );
 
@@ -88,9 +95,21 @@ function createNewBookForm() {
         const pages = Number(pagesField.input.value);
         const read = readInput.checked;
 
-        const book = new Book(title, author, pages, read);
-        addBookToLibrary(book);
-        form.remove();
+        const file = coverField.input.files[0];
+
+        const finalize = (coverDataURL) => {
+            const book = new Book(title, author, pages, read, coverDataURL);
+            addBookToLibrary(book);
+            form.remove();
+        };
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => finalize(reader.result);
+            reader.readAsDataURL(file);
+        } else {
+            finalize(null);
+        }
     });
 
     const aside = document.querySelector("aside");
@@ -114,6 +133,17 @@ function renderLibrary() {
         const card = document.createElement("article");
         card.className = "book-card";
 
+        if (bk.cover) {
+            const img = document.createElement("img");
+            img.src = bk.cover;
+            img.alt = `${bk.title} cover`;
+            img.className = "book-cover";
+            card.appendChild(img);
+        }
+
+        const contentCard = document.createElement("div");
+        contentCard.className = "content-card";
+
         const h3 = document.createElement("h3");
         h3.textContent = bk.title;
 
@@ -131,12 +161,12 @@ function renderLibrary() {
 
         const pStatus = document.createElement("p");
         pStatus.className = "read-status";
-        pStatus.textContent = bk.read ? "Readed ✅" : "Not readed ❌";
+        pStatus.textContent = bk.read ? "Read ✅" : "Not read ❌";
 
         const toggleBtn = document.createElement("button");
         toggleBtn.type = "button";
         toggleBtn.className = "toggle-read";
-        toggleBtn.textContent = bk.read ? "Remove read" : "Mark read";
+        toggleBtn.textContent = bk.read ? "Mark as unread" : "Mark as read";
 
         toggleBtn.addEventListener("click", () => {
             bk.read = !bk.read;
@@ -151,9 +181,10 @@ function renderLibrary() {
         deleteBtn.addEventListener("click", () => {
             deleteBook(bk.id);
             renderLibrary();
-        })
+        });
 
-        card.append(h3, pAuthor, pPages, pStatus, toggleBtn, deleteBtn);
+        contentCard.append(h3, pAuthor, pPages, pStatus, toggleBtn, deleteBtn);
+        card.appendChild(contentCard);
         main.appendChild(card);
     });
 }
