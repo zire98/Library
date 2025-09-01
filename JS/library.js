@@ -1,17 +1,6 @@
+import Book from './Book.js';
+
 let myLibrary = [];
-
-function Book(title, author, pages, read, cover) {
-    this.id = crypto.randomUUID();
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.cover = cover || null;
-
-    this.isRead = () => (this.read ? "is read" : "is not read");
-    this.bookInfo = () =>
-        `${this.title} by ${this.author}, ${this.pages} pages, ${this.isRead()}.`;
-}
 
 function createLabeledInput({ labelText, type, name, id, required = false, min }) {
     const wrapper = document.createElement("div");
@@ -170,7 +159,9 @@ function renderLibrary() {
 
         toggleBtn.addEventListener("click", () => {
             bk.read = !bk.read;
-            renderLibrary();
+
+            pStatus.textContent = bk.read ? "Read ✅" : "Not read ❌";
+            toggleBtn.textContent = bk.read ? "Mark as unread" : "Mark as read";
         });
 
         const deleteBtn = document.createElement("button");
